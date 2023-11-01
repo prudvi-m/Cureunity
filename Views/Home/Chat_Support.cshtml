@@ -1,0 +1,96 @@
+﻿@{
+    ViewData["Title"] = "Privacy Policy";
+}
+
+<script type="text/javascript" id="hs-script-loader" async defer src="//js-na1.hs-scripts.com/43979200.js"></script>
+
+
+<div class="chat-container">
+
+    <div class="bot-message">Hi! How can I help you?</div>
+</div>
+<div class="chat-container">
+<input type="text" id="user-input" placeholder="Your response...">
+<button onclick="sendMessage()">Send</button>
+</div>
+
+
+    <style >
+    #hubspot-messages-iframe-container {
+            display:none!important;
+        }
+    .chat-container {
+        border: 1px solid #ccc;
+        width: 300px;
+        margin: 0 auto;
+        padding: 10px;
+    }
+
+    .user-message {
+        background-color: #cce5ff;
+        padding: 5px;
+        margin: 5px;
+    }
+
+    .bot-message {
+        background-color: #e6ffe6;
+        padding: 5px;
+        margin: 5px;
+    }
+</style>
+
+    <script>
+    const botMessages = [
+        "Would you like to talk to our customer?",
+        "What can we assist you with?",
+        "How can we make your experience better?",
+        "Is there anything else you'd like to ask or tell us?",
+    ];
+
+    let currentBotMessageIndex = 0;
+
+    function sendMessage() {
+        const userMessage = document.getElementById("user-input").value;
+        const chatContainer = document.querySelector(".chat-container");
+
+        if (currentBotMessageIndex < botMessages.length) {
+            // Display user's message
+            const userMessageDiv = document.createElement("div");
+            userMessageDiv.className = "user-message";
+            userMessageDiv.textContent = userMessage;
+            chatContainer.appendChild(userMessageDiv);
+
+            // Display bot's message
+            const botMessageDiv = document.createElement("div");
+            botMessageDiv.className = "bot-message";
+            botMessageDiv.textContent = botMessages[currentBotMessageIndex];
+            chatContainer.appendChild(botMessageDiv);
+
+            currentBotMessageIndex++;
+
+            if (currentBotMessageIndex === botMessages.length) {
+                // If it's the last message, call the openchat() function
+                openchat();
+            }
+        }
+
+        document.getElementById("user-input").value = "";
+    }
+
+
+
+    function openchat(){
+        const chatContainer = document.getElementById('hubspot-messages-iframe-container');
+
+        if (chatContainer) {
+            if (chatContainer.style.display === 'none' || chatContainer.style.display === '') {
+                chatContainer.style.setProperty('display', 'block', 'important'); // Show the chat container
+                $(".chat-container").hide();
+            } else {
+                chatContainer.style.setProperty('display', 'none', 'important'); // Hide the chat container
+            }
+        }
+    }
+</script>
+
+

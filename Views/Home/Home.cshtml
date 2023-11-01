@@ -1,0 +1,576 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+<style>
+    /* Style for the search bar container */
+    .search-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 50px;
+    }
+
+ 
+
+    /* Style for the search input */
+    .search-input {
+        width: 300px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        outline: none;
+    }
+
+    /* Style for the search button */
+    .search-button {
+        background-color: rgb(0 164 189 / 82%);
+        color: white;
+        border: none;
+        border-radius: 5px;
+        padding: 10px 20px;
+        margin-left: 10px;
+        cursor: pointer;
+
+    }
+        .search-button:hover {
+            background-color: #0056b3;
+        }
+
+    * {
+        box-sizing: border-box
+    }
+
+    .navlks{
+        font-family: sans-serif;
+    }
+
+    body {
+        font-family: "Lato", sans-serif;
+    }
+
+    /* Style the tab */
+    .tab {
+        float: left;
+        width: 30%;
+        height: 300px;
+    }
+
+        /* Style the buttons inside the tab */
+        .tab button {
+            display: block;
+            background-color: inherit;
+            color: black;
+            padding: 14px 20px;
+            width: 200px;
+            border: none;
+            outline: none;
+            text-align: left;
+            cursor: pointer;
+            transition: 0.3s;
+            font-size: 12px;
+            border: 0.5px solid #cccccc78;
+            border-top: 0.5px solid white;
+        }
+
+         
+
+            /* Create an active/current "tab button" class */
+            .tab button.active {
+                background-color: rgb(0 164 189 / 82%);
+                color:white;
+
+            }
+
+    /* Style the tab content */
+    .tabcontent {
+        float: left;
+        padding: 0px 12px;
+        width: 70%;
+        border-left: none;
+        height: 300px;
+    }
+    /*Cards */
+    .container {
+        display: flex;
+        justify-content: space-between;
+        padding: 20px;
+    }
+
+    /* Style for the card boxes */
+    .card {
+        flex: 1;
+        background-color: #f0f0f0;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        padding: 1px;
+        margin: 10px;
+        box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
+        .card p{
+        font-size:12px;
+        padding:5px;
+        }
+    .card:hover{
+            background-color: rgb(0 164 189 / 82%);
+            color: white;
+            transition:.5s;
+    }
+    .card img{
+        width:100%;
+            height: 203px;
+        border-radius:3px;
+    }
+    .description{
+        font-size: 10px!important;
+        color: grey;
+    }
+    /* Modal Styles */
+    .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.7);
+    }
+
+    .modal-content {
+        background-color: white;
+        margin: 10% auto;
+        padding: 20px;
+        width: 60%;
+    }
+
+    .close {
+        cursor: pointer;
+        margin-left: 97%;
+        color: #ff000091;
+    }
+
+    #Track .container {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+    }
+
+    #Track h1 {
+        text-align: center;
+    }
+
+    #Track .tracking-form {
+        text-align: center;
+    }
+
+    #Track .tracking-input {
+        width: 100%;
+        padding: 10px;
+        margin: 10px 0;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+
+    #Track .tracking-button {
+        background-color: #007BFF;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        padding: 10px 20px;
+        cursor: pointer;
+    }
+
+    #Track .tracking-result {
+        margin-top: 20px;
+    }
+
+    #Track .tracking-status {
+        font-weight: bold;
+    }
+
+    #Track .tracking-progress {
+        margin-top: 10px;
+    }
+
+    .progress-bar {
+        width: 100%;
+        background-color: #ccc;
+        height: 20px;
+        border-radius: 10px;
+        position: relative;
+    }
+
+    .progress-value {
+        
+        background-color: rgb(0 164 189 / 82%);
+        height: 100%;
+        border-radius: 10px;
+    }
+
+</style>
+<div class="tab navlks">
+    <button class="tablinks" onclick="openCity(event, 'London')" id="defaultOpen" style="border-top: 0.5px solid #cccccc78;border-top-left-radius:3.5px;border-top-right-radius:3.5px;">Search Medicines</button>
+    <button class="tablinks adminpart" onclick="openCity(event, 'Analysis')" >Analysis</button>
+    <button class="tablinks adminpart" onclick="openCity(event, 'AddProducts')">Add Products</button>
+    <button class="tablinks" onclick="openCity(event, 'Track'),getmedicineorders();">Tracking</button>
+</div>
+
+<div id="London" class="tabcontent">
+    <div class="search-container">
+        <select  class="search-input" placeholder="Search..." id="getmedID">
+            <option value="1">Fewer</option>
+            <option value="2">Cough</option>
+            <option value="3">Headache</option>
+        </select>
+        <button class="search-button" onclick="getmedicine();">Search</button>
+    </div>
+    <div class="container" id="itemslist" style="overflow-x: scroll;">
+      
+       
+        
+    </div>
+   
+</div>
+
+<div id="Analysis" class="tabcontent">
+    <div id='chartContainer' style="width: 850px; height: 500px">
+    </div>
+    <table style="width: 550px">
+        <tr>
+            <td>
+                <p style="font-family: Verdana; font-size: 12px;">
+                    Select Serie 1 Symbol:
+                </p>
+                <div id='dropDownSerie1Symbol'>
+                </div>
+            </td>
+            <td>
+                <p style="font-family: Verdana; font-size: 12px;">
+                    Select Serie 2 Symbol:
+                </p>
+                <div id='dropDownSerie2Symbol'>
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>
+<div id="Track" class="tabcontent">
+    <div class="search-container">
+        <label>Your Orders</label>
+        <select  class="search-input" placeholder="Search..." id="GetMedicines" onchange="gettracking();">
+            
+        </select>
+       
+    </div>
+    <div class="container">
+        <h1>Order Tracking</h1>
+        <div class="tracking-result">
+            <p class="tracking-status">Order Status: Shipped</p>
+            <div class="tracking-progress">
+                <p>Order Progress:</p>
+                <div class="progress-bar">
+                    <div class="progress-value"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+   
+</div>
+
+
+<div id="AddProducts" class="tabcontent" style="padding-left:30px;">
+        <h3>Add Products</h3>
+        <label>Category</label>
+        <select class="search-input" placeholder="Search..." id="SelectmedID">
+            <option value="1">Fewer</option>
+            <option value="2">Cough</option>
+            <option value="3">Headache</option>
+        </select>
+        <br />
+        <label>Medicine</label>
+        <input type="text" id="medicine" class="form-control" />
+        <br />
+        <label>Description</label>
+        <input type="text" id="description" class="form-control" />
+        <br />
+        <label>Image</label>
+        <input type="text" class="form-control" id="image" />
+        <br />
+        <button class="search-button" onclick="AddMedicines()">Add</button>
+</div>
+
+
+<div id="myModal" class="modal">
+    <div class="modal-content">
+        <span class="close" id="closeModal">&times;</span>
+        <h2>Delivery Address</h2>
+    <textarea class="form-control" id="deladdress"></textarea>
+    <br />
+        <input class="form-control" type="number" id="delquantity" name="quantity" min="1" max="10" step="1" placeholder="Quantity">
+
+    <br />
+        <button class="btn btn-sm btn-primary" style="width: 15%;margin-left:85%" onclick="saveorderdetails();">
+            Deliver here
+        </button>
+    </div>
+</div>
+
+<input id="medid" style="display:none"/>
+
+
+<script>
+    var RootUrl = '@Url.Content("~/")';
+
+    $(document).ready(function () {
+        // prepare chart data as an array
+        var sampleData = [
+            { City: 'New York', SalesQ1: 330500, SalesQ2: 210500, YoYGrowth: 1.05 },
+            { City: 'London', SalesQ1: 120000, SalesQ2: 169000, YoYGrowth: 1.15 },
+            { City: 'Paris', SalesQ1: 205000, SalesQ2: 275500, YoYGrowth: 1.45 },
+            { City: 'Tokyo', SalesQ1: 187000, SalesQ2: 130100, YoYGrowth: 0.45 },
+            { City: 'Berlin', SalesQ1: 187000, SalesQ2: 113000, YoYGrowth: 1.65 },
+            { City: 'San Francisco', SalesQ1: 142000, SalesQ2: 102000, YoYGrowth: 1.25 },
+            { City: 'Chicago', SalesQ1: 171000, SalesQ2: 124000, YoYGrowth: 0.75 }
+        ];
+        // prepare jqxChart settings
+        var settings = {
+            title: "Sales by City in Q1 & Q2",
+            description: "",
+            enableAnimations: true,
+            showLegend: true,
+            padding: { left: 5, top: 5, right: 5, bottom: 5 },
+            titlePadding: { left: 90, top: 0, right: 0, bottom: 10 },
+            source: sampleData,
+            colorScheme: 'scheme01',
+            xAxis:
+            {
+                dataField: 'City',
+                valuesOnTicks: false
+            },
+            valueAxis:
+            {
+                minValue: 50000,
+                maxValue: 350000,
+                unitInterval: 50000,
+                title: { text: 'Sales ($)<br>' },
+                labels: {
+                    formatSettings: { prefix: '$', thousandsSeparator: ',' },
+                    horizontalAlignment: 'right'
+                }
+            },
+            seriesGroups:
+                [
+                    {
+                        type: 'scatter',
+                        series: [
+                            { dataField: 'SalesQ1', symbolSize: 20, symbolType: 'circle', displayText: 'Sales in Q1' },
+                            { dataField: 'SalesQ2', symbolSize: 20, symbolType: 'diamond', displayText: 'Sales in Q2' }
+                        ]
+                    }
+                ]
+        };
+        // setup the chart
+        $('#chartContainer').jqxChart(settings);
+        var chart = $('#chartContainer').jqxChart('getInstance');
+        // symbol selection drop down
+        var symbolsList = ["circle", "diamond", "square", "triangle_up", "triangle_down", "triangle_left", "triangle_right"];
+        $("#dropDownSerie1Symbol").jqxDropDownList({ source: symbolsList, selectedIndex: 2, width: '200', height: '25', dropDownHeight: 100 });
+        $('#dropDownSerie1Symbol').on('change', function (event) {
+            var value = event.args.item.value;
+            chart.seriesGroups[0].series[0].symbolType = value;
+            chart.update();
+        });
+        $("#dropDownSerie2Symbol").jqxDropDownList({ source: symbolsList, selectedIndex: 1, width: '200', height: '25', dropDownHeight: 100 });
+        $('#dropDownSerie2Symbol').on('change', function (event) {
+            var value = event.args.item.value;
+            chart.seriesGroups[0].series[1].symbolType = value;
+            chart.update();
+        });
+    });
+
+
+    function gettracking(){
+        var tracking = $("#GetMedicines").val();
+    if(tracking == '1' || tracking == 1){
+            $(".progress-value").css('width','25%')
+    }
+        else if (tracking == '2' || tracking == 2){
+            $(".progress-value").css('width', '50%')
+
+        }
+        else if (tracking == '3' || tracking == 3) {
+            $(".progress-value").css('width', '75%')
+
+        }
+        else{
+            $(".progress-value").css('width', '100%')
+
+        }
+    }
+
+    function openCity(evt, cityName) {
+        var Admin = '@ViewBag.usertype';
+
+
+        var i, tabcontent, tablinks;
+        tabcontent = document.getElementsByClassName("tabcontent");
+        for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].style.display = "none";
+        }
+        tablinks = document.getElementsByClassName("tablinks");
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace(" active", "");
+        }
+        document.getElementById(cityName).style.display = "block";
+        evt.currentTarget.className += " active";
+        if(Admin =='1'){
+            $(".adminpart").show();
+        }
+        else{
+            $(".adminpart").hide();
+        }
+    }
+
+    // Get the element with id="defaultOpen" and click on it
+    document.getElementById("defaultOpen").click();
+
+    function Registration() {
+        var InFName = $("#InFName").val();
+        var InLName = $("#InLName").val();
+        var InContact = $("#InContact").val();
+        var InEmail = $("#InEmail").val();
+        var InAddress = $("#InAddress").val();
+        var InPass = $("#InPass").val();
+        var InRePass = $("#InRePass").val();
+        if (InFName == '' || InLName == '' || InContact == '' || InEmail == '' || InAddress == '' || InPass == '' || InRePass == '') {
+            alert('Enter all fields');
+        }
+        else if (InPass != InRePass) {
+            alert("Entered password is not equal");
+        }
+        else {
+            $.ajax({
+                url: "AddorUpdateUsers",
+                type: "Post",
+                data: {
+                     Username: InFName + InLName, Email: InEmail, Address: InAddress,
+                    Password: InPass
+                },
+                contenttype: 'application/json; charset=utf-8',
+                datatype: 'json',
+                success: function () {
+                    alert("Successfully Updated");
+                   
+                }
+            });
+        }
+
+    }
+
+    function AddMedicines() {
+        var Medid = $("#SelectmedID").val();
+        var medicine = $("#medicine").val();
+        var description = $("#description").val();
+        var image = $("#image").val();
+        var Vgetmedid = $("#getmedID").val();
+        var theurl = "UpsertMedicine";
+        $.ajax({
+            url: theurl,
+            type: "post",
+            data: {
+                Medid: Medid, medicine: medicine, description: description, image: image
+            },
+            contenttype: 'application/json; charset=utf-8',
+            datatype: 'json',
+            success: function (data) {
+                var data = data.dtList;
+            alert("Details Added Successfully");
+            },
+        });
+    }
+
+    function getmedicineorders() {
+        $("#GetMedicines").empty();
+        var theurl = "MedicineNames";
+        $.ajax({
+            url: theurl,
+            type: "post",
+            data: {
+            },
+            contenttype: 'application/json; charset=utf-8',
+            datatype: 'json',
+            success: function (data) {
+                var data = data.dtList;
+                $('#GetMedicines').append('<option value="0">--Select Orders--</option>');
+
+                $.each(data, function (index, value) {
+                    $('#GetMedicines').append('<option value=' + value.MedicineID + '>' + value.MedicineName + '</option>');
+                });
+
+            },
+        });
+    }
+
+    function getmedicine() {
+        $("#itemslist").empty();
+        var Vgetmedid = $("#getmedID").val();
+        var theurl = "GetMedicineByDisease";
+            $.ajax({
+                url: theurl,
+                type: "post",
+                data: {
+                Disease: Vgetmedid
+                },
+                contenttype: 'application/json; charset=utf-8',
+                datatype: 'json',
+                success: function (data) {
+                    var data = data.dtList;
+                $.each(data, function (index, value) {
+                    $('#itemslist').append('<div class= "card" onclick=getMedicineID(' + value.MedicineID + ')>\
+                                <img src='+ value.Image + ' />\
+                            <p>'+ value.MedicineName + '</p>\
+    <p class="description">'+ value.Description + '</p>\
+                        </div>');
+                });
+
+                },
+            });
+    }
+
+    function getMedicineID(id){
+        $("#medid").val(id);
+        $("#myModal").show();
+    }
+    $("#closeModal").click(function () {
+        $("#myModal").hide();
+    });
+    function saveorderdetails(){
+        var medid = $("#medid").val();
+        var deladd = $("#deladdress").val();
+        var delqua = $("#delquantity").val();
+
+        var theurl = "ProcessOrder";
+        $.ajax({
+            url: theurl,
+            type: "post",
+            data: {
+                MedicineID: medid,
+                Quantity: delqua,
+                DeliveryAddress:  deladd,
+            },
+            contenttype: 'application/json; charset=utf-8',
+            datatype: 'json',
+            success: function (data) {
+                var data = data.dtList;
+                $("#myModal").hide();
+                alert("Order Placed Successfully");
+                $("#medid").val('');
+                $("#deladdress").val('');
+                $("#delquantity").val('');
+            },
+        });
+
+    }
+</script>
